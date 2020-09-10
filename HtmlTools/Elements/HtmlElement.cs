@@ -8,9 +8,9 @@ namespace HtmlConstructor.HtmlTools.Elements
 {
     public class HtmlElement
     {
-        public HtmlElement _innerElement { get; set; }
+        public HtmlElement[] InnerElements { get; set; }
         public string HtmlString { get; set; }
-        public string InnerText { get; set; }
+        public string InnerText { get; set; } = "";
         public string TagName { get; set; }
         public bool HasEndTag { get; set; } = true;
         public HtmlElementParameters Parameters { get; set; }
@@ -26,6 +26,8 @@ namespace HtmlConstructor.HtmlTools.Elements
             InnerText = innerText;
             TagName = tagName;
             HasEndTag = hasEndTag;
+
+            //При присвоении обновляется строка HtmlString 
             Parameters = parameters;
         }
 
@@ -37,11 +39,18 @@ namespace HtmlConstructor.HtmlTools.Elements
             RebuildHtmlString();
         }
         
-        void RebuildHtmlString()
+        public string RebuildHtmlString()
         {
-            HtmlString = $@"<{TagName} {string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'"))}>{InnerText}";
-            if (HasEndTag)
-                HtmlString += $@"</{TagName}>";
+            string innerHtml = string.Join("\n", InnerElements.Select(elem => elem.RebuildHtmlString()));
+
+            if (InnerElements.Any())
+            {
+                HtmlString = $@"<{TagName} {string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'"))}>{InnerText} {innerHtml}";
+                if (HasEndTag)
+                    HtmlString += $@"</{TagName}>";
+            }
+
+            return HtmlString;
         }
     }
 }
