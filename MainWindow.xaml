@@ -4,29 +4,37 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HtmlConstructor"
+        xmlns:viewModels="clr-namespace:HtmlConstructor.ViewModels"
+        xmlns:local1="clr-namespace:HtmlConstructor.CustomControl"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <viewModels:GeneralViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"></ColumnDefinition>
             <ColumnDefinition Width="0.7*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <ScrollBar Grid.Column="0" HorizontalAlignment="Right"></ScrollBar>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.9*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ListBox Grid.Column="0" x:Name="ElementsList" ItemsSource="{Binding HtmlElements}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <TextBlock FontSize="16" Text="{Binding Path=Name}"/>
+                            <TextBlock FontSize="16" Text="{Binding Path=Description}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
 
-        <ListBox x:Name="ElementsList" SelectionChanged="ElementsList_SelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="5">
-                        <Image Width="100" Height="75" Source="{Binding Path=ImagePath}" />
-                        <TextBlock FontSize="16" Text="{Binding Path=Title}" HorizontalAlignment="Center" />
-                        <TextBlock FontSize="16" Text="{Binding Path=Company}" HorizontalAlignment="Center" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-        <WebBrowser Name="Browser" Grid.Column="1">
-        </WebBrowser>
+        <local1:BindableWebBrowser Grid.Row="0" Grid.Column="1" x:Name="NewWebBrowser" BindableSource="{Binding Doc.Path}">
+        </local1:BindableWebBrowser>
     </Grid>
 </Window>

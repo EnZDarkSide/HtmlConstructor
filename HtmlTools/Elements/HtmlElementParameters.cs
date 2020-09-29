@@ -13,11 +13,21 @@ namespace HtmlConstructor.HtmlTools.Elements
 
         public object this[string key]
         {
-            get => Parameters.FirstOrDefault(param => param.Key == key).Value;
-            set => Parameters.FirstOrDefault(param => param.Key == key).Value = value;
+            get => Parameters.FirstOrDefault(param => param.Key == key)?.Value;
+            set
+            {
+                var parameter = Parameters.FirstOrDefault(param => param.Key == key);
+
+                parameter.Value = value;
+            }
         }
 
-        public List<HtmlElementParameter> Parameters { get; private set; }
+        public HtmlElementParameters ()
+        {
+            OnParametersUpdate?.Invoke(null,null);
+        }
+
+        public List<HtmlElementParameter> Parameters = new List<HtmlElementParameter>();
 
         public ICollection<string> Keys => (ICollection<string>)Parameters.Select(param => param.Key);
 
@@ -97,7 +107,7 @@ namespace HtmlConstructor.HtmlTools.Elements
 
         public bool TryGetValue(string key, out object value)
         {
-            value = Parameters.FirstOrDefault(param => param.Key == key).Value;
+            value = Parameters.FirstOrDefault(param => param.Key == key)?.Value;
 
             return value != null;
         }
@@ -110,7 +120,7 @@ namespace HtmlConstructor.HtmlTools.Elements
     public class HtmlElemParametersEnumerator : IEnumerator<KeyValuePair<string, object>>
     {
         int _position = -1;
-        List<HtmlElementParameter> _collection;
+        readonly List<HtmlElementParameter> _collection;
 
         public KeyValuePair<string, object> Current => new KeyValuePair<string, object>(_collection[_position].Key, _collection[_position].Value);
 
@@ -123,7 +133,7 @@ namespace HtmlConstructor.HtmlTools.Elements
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _collection.Clear();
         }
 
         public bool MoveNext()

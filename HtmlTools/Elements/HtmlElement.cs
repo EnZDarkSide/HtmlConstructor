@@ -8,16 +8,24 @@ namespace HtmlConstructor.HtmlTools.Elements
 {
     public class HtmlElement
     {
-        public HtmlElement[] InnerElements { get; set; }
+        //Добавить реверс между innerText и innerHtml
+
+        public List<HtmlElement> InnerElements { get; set; } = new List<HtmlElement>();
         public string HtmlString { get; set; }
         public string InnerText { get; set; } = "";
         public string TagName { get; set; }
         public bool HasEndTag { get; set; } = true;
-        public HtmlElementParameters Parameters { get; set; }
+        public HtmlElementParameters Parameters { get; set; } = new HtmlElementParameters();
 
         public HtmlElement()
         {
-            Parameters.OnParametersUpdate += Parameters_OnParametersUpdate;
+            Parameters.OnParametersUpdate += HtmlText_OnParametersUpdate;
+        }
+
+        public void AddInnerElement(HtmlElement elem)
+        {
+            InnerElements.Add(elem);
+            GetHtmlString();
         }
 
         public HtmlElement(string htmlString, string innerText, string tagName, bool hasEndTag, HtmlElementParameters parameters = null) : base()
@@ -31,24 +39,23 @@ namespace HtmlConstructor.HtmlTools.Elements
             Parameters = parameters;
         }
 
-        void Parameters_OnParametersUpdate(string key, object value)
+        private void HtmlText_OnParametersUpdate(string key, object value)
         {
             if (string.IsNullOrEmpty(TagName))
                 throw new NullReferenceException("TagName is null");
 
-            RebuildHtmlString();
+            GetHtmlString();
         }
         
-        public string RebuildHtmlString()
+        public string GetHtmlString()
         {
-            string innerHtml = string.Join("\n", InnerElements.Select(elem => elem.RebuildHtmlString()));
+            var innerHtml = string.Join("", InnerElements.Select(elem => elem.GetHtmlString()));
 
-            if (InnerElements.Any())
-            {
-                HtmlString = $@"<{TagName} {string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'"))}>{InnerText} {innerHtml}";
-                if (HasEndTag)
-                    HtmlString += $@"</{TagName}>";
-            }
+            HtmlString = $@"<{TagName} {string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'"))}";
+            if (HasEndTag)
+                HtmlString += $@">{InnerText} {innerHtml} </{TagName}>";
+            else
+                HtmlString += $@">";
 
             return HtmlString;
         }

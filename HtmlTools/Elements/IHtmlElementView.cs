@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace HtmlConstructor.HtmlTools.Elements
 {
-    public interface IHtmlElement
+    public interface IHtmlElementView
     {
         Uri Img {get; set;}
         string Name { get; set;}
         string Description {get; set;}
-        HtmlPattern Pattern {get; set;}
+        HtmlElement DefaultElement {get; set;}
     }
 }
