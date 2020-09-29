@@ -67,10 +67,14 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
         {
             var result = new HtmlElement("head", null);
 
-            var parameters = new Dictionary<string,object>()
-                { {"rel", "stylesheet" }, { "href", "styles.css" }, { "type", "text/css" } };
-
-            result.AddInnerElement(new HtmlElement("link", parameters, false));
+            result.AddInnerElement(new HtmlElement("link", new Dictionary<string, object>()
+                { {"rel", "stylesheet" }, { "href", "styles.css" }, { "type", "text/css" } }, false));
+            
+            result.AddInnerElement(new HtmlElement("link", new Dictionary<string, object>() { 
+                { "rel", "stylesheet" },
+                { "href", @"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" },
+                { "integrity", "sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" },
+                { "crossorigin", "anonymous" } }, false));
 
             return result;
         }
