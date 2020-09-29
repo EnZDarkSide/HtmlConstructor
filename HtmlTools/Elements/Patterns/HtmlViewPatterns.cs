@@ -11,7 +11,7 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         public Uri Img { get; set; } = null;
         public string Name { get; set; } = "Тэг 'А'";
         public string Description { get; set; } = "Создает элемент со ссылкой";
-        public HtmlElement DefaultElement { get; set; } = HtmlElementBuilder.CreateElementA();
+        public HtmlElement DefaultElement => HtmlElementBuilder.CreateElementA();
     }
 
     public class HtmlDivView : IHtmlElementView
@@ -19,7 +19,7 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         public Uri Img { get; set; } = null;
         public string Name { get; set; } = "Тэг 'Div'";
         public string Description { get; set; } = "Создает элемент-контейнер";
-        public HtmlElement DefaultElement { get; set; } = HtmlElementBuilder.CreateElementDiv();
+        public HtmlElement DefaultElement => HtmlElementBuilder.CreateElementDiv();
     }
 
     public class HtmlBodyView : IHtmlElementView
@@ -27,7 +27,7 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         public Uri Img { get; set; } = null;
         public string Name { get; set; } = "Тэг 'Body'";
         public string Description { get; set; } = "Создает элемент со ссылкой";
-        public HtmlElement DefaultElement { get; set; } = HtmlElementBuilder.CreateElementBody();
+        public HtmlElement DefaultElement => HtmlElementBuilder.CreateElementBody();
     }
 
     public class SlideshowView : IHtmlElementView
@@ -35,7 +35,7 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         public Uri Img { get; set; } = null;
         public string Name { get; set; } = "Слайдшоу";
         public string Description { get; set; } = "";
-        public HtmlElement DefaultElement { get; set; } = HtmlElementBuilder.CreateElementSlideshow();
+        public HtmlElement DefaultElement => HtmlElementBuilder.CreateElementSlideshow();
     }
 
     public static class HtmlElemViewCollection

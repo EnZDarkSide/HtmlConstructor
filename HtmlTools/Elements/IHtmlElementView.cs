@@ -11,6 +11,7 @@ namespace HtmlConstructor.HtmlTools.Elements
         Uri Img {get; set;}
         string Name { get; set;}
         string Description {get; set;}
-        HtmlElement DefaultElement {get; set;}
+
+        HtmlElement DefaultElement { get; }
     }
 }

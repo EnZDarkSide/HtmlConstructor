@@ -10,47 +10,50 @@ namespace HtmlConstructor.HtmlTools.Elements
     {
         //Добавить реверс между innerText и innerHtml
 
-        public List<HtmlElement> InnerElements { get; set; } = new List<HtmlElement>();
-        public string HtmlString { get; set; }
+        private List<HtmlElement> innerElements = new List<HtmlElement>();
+
+        public List<HtmlElement> InnerElements { get => innerElements; set => SetInnerElements(value); }
+
+        private void SetInnerElements(List<HtmlElement> value)
+        {
+            innerElements = value;
+            UpdateHtmlString();
+        }
+
+        public string HtmlString { get; set; } = "";
         public string InnerText { get; set; } = "";
         public string TagName { get; set; }
         public bool HasEndTag { get; set; } = true;
         public HtmlElementParameters Parameters { get; set; } = new HtmlElementParameters();
 
-        public HtmlElement()
-        {
-            Parameters.OnParametersUpdate += HtmlText_OnParametersUpdate;
-        }
-
         public void AddInnerElement(HtmlElement elem)
         {
             InnerElements.Add(elem);
-            GetHtmlString();
+            UpdateHtmlString();
         }
 
-        public HtmlElement(string htmlString, string innerText, string tagName, bool hasEndTag, HtmlElementParameters parameters = null) : base()
+        public HtmlElement(string tagName, bool hasEndTag = true, HtmlElementParameters parameters = null, string htmlString = "", string innerText = "") : base()
         {
+            Parameters.OnParametersUpdate += HtmlText_OnParametersUpdate;
+
             HtmlString = htmlString;
             InnerText = innerText;
             TagName = tagName;
             HasEndTag = hasEndTag;
 
             //При присвоении обновляется строка HtmlString 
-            Parameters = parameters;
+            Parameters = parameters ?? new HtmlElementParameters();
+            UpdateHtmlString();
         }
 
         private void HtmlText_OnParametersUpdate(string key, object value)
         {
-            if (string.IsNullOrEmpty(TagName))
-                throw new NullReferenceException("TagName is null");
-
-            GetHtmlString();
+            UpdateHtmlString();
         }
         
-        public string GetHtmlString()
+        public string UpdateHtmlString()
         {
-            var innerHtml = string.Join("", InnerElements.Select(elem => elem.GetHtmlString()));
-
+            var innerHtml = string.Join("", InnerElements.Select(elem => elem.HtmlString));
             HtmlString = $@"<{TagName} {string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'"))}";
             if (HasEndTag)
                 HtmlString += $@">{InnerText} {innerHtml} </{TagName}>";

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using DevExpress.Mvvm.Native;
 
 namespace HtmlConstructor.HtmlTools.Elements
 {
@@ -40,12 +41,19 @@ namespace HtmlConstructor.HtmlTools.Elements
         public void Add(string key, object value)
         {
             Parameters.Add(new HtmlElementParameter(key, value));
+            OnParametersUpdate?.Invoke(null, null);
         }
 
         public void Add(KeyValuePair<string, object> item)
         {
-            Add(item.Key, item.Value);
+            Parameters.Add(new HtmlElementParameter(item.Key, item.Value));
             OnParametersUpdate?.Invoke(null,null);
+        }
+
+        public void AddRange(params KeyValuePair<string, object>[] items)
+        {
+            items.ForEach(i => Parameters.Add(new HtmlElementParameter(i.Key, i.Value)));
+            OnParametersUpdate?.Invoke(null, null);
         }
 
         public void AddOrUpdate(string key, object value)

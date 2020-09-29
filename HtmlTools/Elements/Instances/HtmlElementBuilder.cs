@@ -12,50 +12,33 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
     {
         public static HtmlElement CreateElementA(HtmlElementParameters parameters = null, string innerText = "")
         {
-            var result = new HtmlElement
-            {
-                InnerText = innerText,
-                TagName = "a",
-                Parameters = parameters ?? new HtmlElementParameters()
-            };
+            var result = new HtmlElement("a", true, parameters, innerText: innerText);
 
             return result;
         }
 
         public static HtmlElement CreateElementDiv(HtmlElementParameters parameters = null, string innerText = "")
         {
-            var result = new HtmlElement
-            {
-                InnerText = innerText,
-                TagName = "div",
-                Parameters = parameters ?? new HtmlElementParameters()
-            };
+            var result = new HtmlElement("div", true, parameters, innerText: innerText);
 
             return result;
         }
 
         public static HtmlElement CreateElementBody(string innerText = "")
         {
-            var result = new HtmlElement
-            {
-                InnerText = innerText,
-                TagName = "body",
-            };
+            var result = new HtmlElement("body", true, innerText: innerText);
 
             return result;
         }
 
         public static HtmlElement CreateElementImg(string src = "")
         {
-            var result = new HtmlElement()
+            var parameters = new HtmlElementParameters()
             {
-                TagName = "img",
-                HasEndTag = false,
-                Parameters = new HtmlElementParameters()
-                {
-                    { "src", src }
-                }
+                { "src", src }
             };
+
+            var result = new HtmlElement("img", false, parameters);
 
             return result;
         }
@@ -82,18 +65,12 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
 
         public static HtmlElement CreateElementHead()
         {
-            var result = new HtmlElement
-            {
-                TagName = "body",
-            };
+            var result = new HtmlElement("head");
 
-            result.AddInnerElement(new HtmlElement()
-            {
-                TagName = "link",
-                HasEndTag = false,
-                Parameters = new HtmlElementParameters()
-                { {"rel", "stylesheet" }, { "href", "styles.css" }, { "type", "text/css" } }
-            });
+            var parameters = new HtmlElementParameters()
+                { {"rel", "stylesheet" }, { "href", "styles.css" }, { "type", "text/css" } };
+
+            result.AddInnerElement(new HtmlElement("link", false, parameters));
 
             return result;
         }
