@@ -4,7 +4,10 @@ using DotNetBrowser.Handlers;
 using DotNetBrowser.Navigation.Events;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +28,7 @@ namespace HtmlConstructor.CustomControl
     public partial class BindableWebBrowser : UserControl
     {
         private const string _SkipSourceChange = "Skip";
+        FileSystemWatcher watcher;
 
         private IBrowser browser;
 
@@ -52,6 +56,34 @@ namespace HtmlConstructor.CustomControl
             CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseBack, BrowseBack, CanBrowseBack));
             CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseForward, BrowseForward, CanBrowseForward));
             CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, Refresh, TrueCanExecute));
+
+            CreateFileWatcher();
+        }
+
+        public void CreateFileWatcher()
+        {
+            // Create a new FileSystemWatcher and set its properties.
+            watcher = new FileSystemWatcher
+            {
+                Path = Constants.WwwDirectory,
+
+                /* Watch for changes in LastAccess and LastWrite times, and 
+                   the renaming of files or directories. */
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
+               | NotifyFilters.FileName | NotifyFilters.DirectoryName
+            };
+
+            // Add event handlers.
+            watcher.Changed += new FileSystemEventHandler(OnChanged);
+
+            // Begin watching.
+            watcher.EnableRaisingEvents = true;
+        }
+
+        // Define the event handlers.
+        private void OnChanged(object source, FileSystemEventArgs e)
+        {
+            Refresh(null, null);
         }
 
 
