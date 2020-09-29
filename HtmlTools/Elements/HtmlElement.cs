@@ -24,7 +24,7 @@ namespace HtmlConstructor.HtmlTools.Elements
         public string InnerText { get; set; } = "";
         public string TagName { get; set; }
         public bool HasEndTag { get; set; } = true;
-        public HtmlElementParameters Parameters { get; set; } = new HtmlElementParameters();
+        public Dictionary<string, object> Parameters { get; set; }
 
         public void AddInnerElement(HtmlElement elem)
         {
@@ -32,29 +32,23 @@ namespace HtmlConstructor.HtmlTools.Elements
             UpdateHtmlString();
         }
 
-        public HtmlElement(string tagName, bool hasEndTag = true, HtmlElementParameters parameters = null, string htmlString = "", string innerText = "") : base()
+        public HtmlElement(string tagName, Dictionary<string, object> parameters, bool hasEndTag = true, string htmlString = "", string innerText = "") : base()
         {
-            Parameters.OnParametersUpdate += HtmlText_OnParametersUpdate;
-
             HtmlString = htmlString;
             InnerText = innerText;
             TagName = tagName;
             HasEndTag = hasEndTag;
 
-            //При присвоении обновляется строка HtmlString 
-            Parameters = parameters ?? new HtmlElementParameters();
-            UpdateHtmlString();
-        }
-
-        private void HtmlText_OnParametersUpdate(string key, object value)
-        {
+            Parameters = parameters;
             UpdateHtmlString();
         }
         
         public string UpdateHtmlString()
         {
             var innerHtml = string.Join("", InnerElements.Select(elem => elem.HtmlString));
-            HtmlString = $@"<{TagName} {string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'"))}";
+            var attributes = Parameters != null ? string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'")) : null;
+
+            HtmlString = $@"<{TagName} {attributes}";
             if (HasEndTag)
                 HtmlString += $@">{InnerText} {innerHtml} </{TagName}>";
             else

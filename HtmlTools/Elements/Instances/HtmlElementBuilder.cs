@@ -10,42 +10,42 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
     //Ответсвтенность - создание элементов по-умолчанию
     static class HtmlElementBuilder
     {
-        public static HtmlElement CreateElementA(HtmlElementParameters parameters = null, string innerText = "")
+        public static HtmlElement CreateElementA(Dictionary<string,object> parameters = null, string innerText = "")
         {
-            var result = new HtmlElement("a", true, parameters, innerText: innerText);
+            var result = new HtmlElement("a", parameters, true, innerText: innerText);
 
             return result;
         }
 
-        public static HtmlElement CreateElementDiv(HtmlElementParameters parameters = null, string innerText = "")
+        public static HtmlElement CreateElementDiv(Dictionary<string,object> parameters = null, string innerText = "")
         {
-            var result = new HtmlElement("div", true, parameters, innerText: innerText);
+            var result = new HtmlElement("div", parameters, true, innerText: innerText);
 
             return result;
         }
 
         public static HtmlElement CreateElementBody(string innerText = "")
         {
-            var result = new HtmlElement("body", true, innerText: innerText);
+            var result = new HtmlElement("body", null);
 
             return result;
         }
 
         public static HtmlElement CreateElementImg(string src = "")
         {
-            var parameters = new HtmlElementParameters()
+            var parameters = new Dictionary<string,object>()
             {
                 { "src", src }
             };
 
-            var result = new HtmlElement("img", false, parameters);
+            var result = new HtmlElement("img", parameters, false);
 
             return result;
         }
 
         internal static HtmlElement CreateElementSlideshow()
         {
-            var parameters = new HtmlElementParameters
+            var parameters = new Dictionary<string, object>
             {
                 { "class", "wrapper" }
             };
@@ -65,12 +65,12 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
 
         public static HtmlElement CreateElementHead()
         {
-            var result = new HtmlElement("head");
+            var result = new HtmlElement("head", null);
 
-            var parameters = new HtmlElementParameters()
+            var parameters = new Dictionary<string,object>()
                 { {"rel", "stylesheet" }, { "href", "styles.css" }, { "type", "text/css" } };
 
-            result.AddInnerElement(new HtmlElement("link", false, parameters));
+            result.AddInnerElement(new HtmlElement("link", parameters, false));
 
             return result;
         }
