@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="HtmlConstructor.CustomControl.Toolkit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HtmlConstructor.CustomControl"
+             xmlns:vm="clr-namespace:HtmlConstructor.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="248" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="white">
+
+    <UserControl.DataContext>
+        <vm:ToolkitViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <ListBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonDown="ElementsList_MouseLeftButtonDown" x:Name="ElementsList" SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding toolViews}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="5" Height="20" HorizontalAlignment="Stretch">
+                        <TextBlock FontSize="14" HorizontalAlignment="Left" Width="Auto" Text="{Binding Path=Name}" Margin="10,0,70,0"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button HorizontalAlignment="Stretch" Height="20" VerticalAlignment="Bottom" Margin="0,20,0,20" Command="{Binding ClickClear}">Очистить</Button>
+        <Button HorizontalAlignment="Stretch" Height="20" VerticalAlignment="Bottom" Command="{Binding ClickAdd}">Добавить</Button>
+    </Grid>
+</UserControl>

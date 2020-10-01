@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,16 +11,16 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
     //Ответсвтенность - создание элементов по-умолчанию
     static class HtmlElementBuilder
     {
-        public static HtmlElement CreateElementA(Dictionary<string,object> parameters = null, string innerText = "")
+        public static HtmlElement CreateElementA(Dictionary<string, string> attributes = null, string innerText = "")
         {
-            var result = new HtmlElement("a", parameters, true, innerText: innerText);
+            var result = new HtmlElement("a", attributes, true, innerText: innerText);
 
             return result;
         }
 
-        public static HtmlElement CreateElementDiv(Dictionary<string,object> parameters = null, string innerText = "")
+        public static HtmlElement CreateElementDiv(Dictionary<string, string> attributes = null, string innerText = "")
         {
-            var result = new HtmlElement("div", parameters, true, innerText: innerText);
+            var result = new HtmlElement("div", attributes, true, innerText: innerText);
 
             return result;
         }
@@ -33,24 +34,36 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
 
         public static HtmlElement CreateElementImg(string src = "")
         {
-            var parameters = new Dictionary<string,object>()
+            var attributes = new Dictionary<string, string>()
             {
                 { "src", src }
             };
 
-            var result = new HtmlElement("img", parameters, false);
+            var result = new HtmlElement("img", attributes, false);
 
+            return result;
+        }
+
+        public static HtmlElement CreateElementCarousel()
+        {
+            var result = new HtmlElement(File.ReadAllText($@"{Constants.WwwDirectory}/patterns/carousel.html"));
+            return result;
+        }
+
+        public static HtmlElement CreateElementCard()
+        {
+            var result = new HtmlElement(File.ReadAllText($@"{Constants.WwwDirectory}/patterns/card.html"));
             return result;
         }
 
         internal static HtmlElement CreateElementSlideshow()
         {
-            var parameters = new Dictionary<string, object>
+            var attributes = new Dictionary<string, string>
             {
                 { "class", "wrapper" }
             };
 
-            var result = CreateElementDiv(parameters);
+            var result = CreateElementDiv(attributes);
 
             result.InnerElements = new List<HtmlElement>()
             {
@@ -63,19 +76,10 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
             return result;
         }
 
+
         public static HtmlElement CreateElementHead()
         {
-            var result = new HtmlElement("head", null);
-
-            result.AddInnerElement(new HtmlElement("link", new Dictionary<string, object>()
-                { {"rel", "stylesheet" }, { "href", "styles.css" }, { "type", "text/css" } }, false));
-            
-            result.AddInnerElement(new HtmlElement("link", new Dictionary<string, object>() { 
-                { "rel", "stylesheet" },
-                { "href", @"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" },
-                { "integrity", "sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" },
-                { "crossorigin", "anonymous" } }, false));
-
+            var result = new HtmlElement(File.ReadAllText($@"{Constants.WwwDirectory}/patterns/head.html"));
             return result;
         }
     }

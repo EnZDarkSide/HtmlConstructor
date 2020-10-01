@@ -14,34 +14,19 @@ namespace HtmlConstructor.HtmlTools.HtmlDocument
     {
         public static string HtmlText { get; set; } = "";
         public string Path { get; set; }
-        public string Styles { get; set; } = "";
 
-        public HtmlDocument(string path, string stylesPath)
+        public HtmlDocument(string path)
         {
             Path = path;
 
             try
             {
                 HtmlText = File.ReadAllText(Path);
-            } catch
+            }
+            catch (FileNotFoundException)
             {
                 File.Create(path);
             }
-            
-            Styles = ReadStylesFile(stylesPath);
-        }
-
-        public string ReadStylesFile(string path)
-        {
-            try
-            {
-                HtmlText = File.ReadAllText(Path);
-            }
-            catch
-            {
-                File.Create(path);
-            }
-            return Styles;
         }
 
         public string UpdateHtml(string htmlText)

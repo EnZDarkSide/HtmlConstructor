@@ -10,17 +10,17 @@ namespace HtmlConstructor.HtmlTools.Elements
     public class HtmlElementParameter
     {
         public string Key;
-        public object Value;
+        public string Value;
 
-        public HtmlElementParameter(string key, object value)
+        public HtmlElementParameter(string key, string value)
         {
             Key = key;
             Value = value;
         }
 
-        public KeyValuePair<string,object> ToKeyValuePair()
+        public KeyValuePair<string,string> ToKeyValuePair()
         {
-            return new KeyValuePair<string, object>(Key, Value);
+            return new KeyValuePair<string, string>(Key, Value);
         }
 
         public override string ToString()

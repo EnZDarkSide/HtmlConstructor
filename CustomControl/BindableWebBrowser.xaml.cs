@@ -49,15 +49,14 @@ namespace HtmlConstructor.CustomControl
                 browser.Navigation.LoadUrl($@"file:///{Constants.WwwDirectory}/index.html");
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
-            InitializeComponent();
-
-            InitializeComponent();
 
             CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseBack, BrowseBack, CanBrowseBack));
             CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseForward, BrowseForward, CanBrowseForward));
             CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, Refresh, TrueCanExecute));
 
             CreateFileWatcher();
+
+            InitializeComponent();
         }
 
         public void CreateFileWatcher()

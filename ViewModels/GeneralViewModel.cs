@@ -18,6 +18,9 @@ namespace HtmlConstructor.ViewModels
         public HtmlDocument Doc { get; set; }
         public List<IHtmlElementView> HtmlElements { get; set; }
 
+        HtmlElement head = HtmlElementBuilder.CreateElementHead();
+        HtmlElement body = HtmlElementBuilder.CreateElementBody();
+
         public GeneralViewModel()
         {
             InitializeBrowser();
@@ -26,18 +29,26 @@ namespace HtmlConstructor.ViewModels
         public void InitializeBrowser()
         {
             HtmlElements = HtmlElemViewCollection.Default();
+            HtmlElemViewCollection.OnAddCommand += AddCommand;
+            HtmlElemViewCollection.OnClearCommand += ClearCommand;
 
-            Doc = new HtmlDocument($@"{Constants.WwwDirectory}/index.html", $@"{Constants.WwwDirectory}/styles.css");
+            Doc = new HtmlDocument($@"{Constants.WwwDirectory}/index.html");
+        }
 
-            var head = HtmlElementBuilder.CreateElementHead();
-            var body = HtmlElementBuilder.CreateElementBody();
+        private void ClearCommand()
+        {
+            Doc.UpdateHtml("");
+        }
 
-            var slideshow = HtmlElementBuilder.CreateElementSlideshow();
+        private void AddCommand(HtmlElement element)
+        {
+            body.AddInnerElement(element);
+            UpdateHtml();
+        }
 
-            body.AddInnerElement(slideshow);
-
-            var htmlString = $"{head.HtmlString} {body.HtmlString}";
-
+        public void UpdateHtml()
+        {
+            var htmlString = $"{head.HtmlText} {body.HtmlText}";
             Doc.UpdateHtml(htmlString);
         }
     }

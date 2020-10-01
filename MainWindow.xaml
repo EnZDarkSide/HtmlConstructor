@@ -13,28 +13,15 @@
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*"></ColumnDefinition>
-            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.9*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <ListBox Grid.Column="0" x:Name="ElementsList" ItemsSource="{Binding HtmlElements}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="5">
-                            <TextBlock FontSize="16" Text="{Binding Path=Name}"/>
-                            <TextBlock FontSize="16" Text="{Binding Path=Description}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <local1:Toolkit></local1:Toolkit>
         </Grid>
 
-        <local1:BindableWebBrowser Grid.Row="0" Grid.Column="1" x:Name="NewWebBrowser" BindableSource="{Binding Doc.Path}">
+        <local1:BindableWebBrowser Grid.Row="0" Grid.Column="1" AllowDrop="true" x:Name="NewWebBrowser" BindableSource="{Binding Doc.Path}">
         </local1:BindableWebBrowser>
     </Grid>
 </Window>

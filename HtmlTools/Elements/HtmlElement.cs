@@ -1,60 +1,102 @@
-﻿using System;
+﻿using AngleSharp;
+using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HtmlConstructor.HtmlTools.Elements
 {
     public class HtmlElement
     {
-        //Добавить реверс между innerText и innerHtml
+        public HtmlElement ParentElement { get; set; }
 
         private List<HtmlElement> innerElements = new List<HtmlElement>();
-
         public List<HtmlElement> InnerElements { get => innerElements; set => SetInnerElements(value); }
 
+        private Dictionary<string, string> attributes = new Dictionary<string, string>();
+        public Dictionary<string, string> Attributes { get => attributes; set => SetAttributes(value); }
+
+        #region setters
         private void SetInnerElements(List<HtmlElement> value)
         {
+            value.ForEach(elem => elem.ParentElement = this);
+
             innerElements = value;
-            UpdateHtmlString();
+            UpdateHtmlText();
         }
 
-        public string HtmlString { get; set; } = "";
+        private void SetAttributes(Dictionary<string, string> value)
+        {
+            attributes = value;
+            UpdateHtmlText();
+        }
+        #endregion
+
+        public string HtmlText { get; set; } = "";
         public string InnerText { get; set; } = "";
         public string TagName { get; set; }
         public bool HasEndTag { get; set; } = true;
-        public Dictionary<string, object> Parameters { get; set; }
 
         public void AddInnerElement(HtmlElement elem)
         {
+            elem.ParentElement = this;
             InnerElements.Add(elem);
-            UpdateHtmlString();
+            UpdateHtmlText();
         }
 
-        public HtmlElement(string tagName, Dictionary<string, object> parameters, bool hasEndTag = true, string htmlString = "", string innerText = "") : base()
+        public HtmlElement(string tagName, Dictionary<string, string> attributes, bool hasEndTag = true, string htmlString = "", string innerText = "") : base()
         {
-            HtmlString = htmlString;
+            HtmlText = htmlString;
             InnerText = innerText;
             TagName = tagName;
             HasEndTag = hasEndTag;
 
-            Parameters = parameters;
-            UpdateHtmlString();
+            Attributes = attributes;
+            UpdateHtmlText();
         }
-        
-        public string UpdateHtmlString()
+
+        public HtmlElement(string htmlText)
         {
-            var innerHtml = string.Join("", InnerElements.Select(elem => elem.HtmlString));
-            var attributes = Parameters != null ? string.Join(" ", Parameters.Select(param => $"{param.Key}='{param.Value}'")) : null;
+            HtmlText = htmlText;
+            DecomposeHtmlText(htmlText);
+        }
 
-            HtmlString = $@"<{TagName} {attributes}";
+        private void DecomposeHtmlText(string htmlText)
+        {
+            IHtmlDocument angle = new HtmlParser().ParseDocument(htmlText);
+            foreach (IElement element in angle.Body.Children)
+            {
+                TagName = element.TagName;
+                Attributes = GetAttributes(element.Attributes);
+                InnerText = element.ChildNodes.OfType<IText>().Select(m => m.Text).FirstOrDefault();
+                InnerElements = element.Children.Select(child => new HtmlElement(child.ToHtml())).ToList();
+                InnerElements.ForEach(elem => elem.ParentElement = this);
+            }
+        }
+
+        private Dictionary<string, string> GetAttributes(INamedNodeMap attrs)
+        {
+            return attrs.ToDictionary(attr => attr.Name, attr => attr.Value);
+        }
+
+        public string UpdateHtmlText()
+        {
+            var innerHtml = string.Join("", InnerElements.Select(elem => elem.HtmlText));
+            var attributes = Attributes != null ? string.Join(" ", Attributes.Select(param => $"{param.Key}='{param.Value}'")) : null;
+
+            HtmlText = $@"<{TagName} {attributes}";
             if (HasEndTag)
-                HtmlString += $@">{InnerText} {innerHtml} </{TagName}>";
+                HtmlText += $@">{InnerText}{innerHtml}</{TagName}>";
             else
-                HtmlString += $@">";
+                HtmlText += $@">";
 
-            return HtmlString;
+            return HtmlText;
         }
     }
 }
