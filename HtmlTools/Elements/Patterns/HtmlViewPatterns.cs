@@ -32,16 +32,6 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         public HtmlElement Element { get; set; } = HtmlElementBuilder.CreateElementBody();
 
     }
-
-    public class SlideshowView : IHtmlElementView
-    {
-        public Uri Img { get; set; } = null;
-        public string Name { get; set; } = "Слайдшоу";
-        public string Description { get; set; } = "";
-
-        public HtmlElement Element { get; set; } = HtmlElementBuilder.CreateElementSlideshow();
-    }
-
     public class CarouselView : IHtmlElementView
     {
         public Uri Img { get; set; } = null;
@@ -73,7 +63,6 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         {
             var elements = new List<IHtmlElementView>
             {
-                new SlideshowView(),
                 new CarouselView(),
                 new CardView(),
             };

@@ -56,27 +56,6 @@ namespace HtmlConstructor.HtmlTools.Elements.Instances
             return result;
         }
 
-        internal static HtmlElement CreateElementSlideshow()
-        {
-            var attributes = new Dictionary<string, string>
-            {
-                { "class", "wrapper" }
-            };
-
-            var result = CreateElementDiv(attributes);
-
-            result.InnerElements = new List<HtmlElement>()
-            {
-                CreateElementImg(@"./images\img_lights_wide.jpg"),
-                CreateElementImg(@"./images\img_mountains_wide.jpg"),
-                CreateElementImg(@"./images\img_nature_wide.jpg"),
-                CreateElementImg(@"./images\img_snow_wide.jpg"),
-            };
-
-            return result;
-        }
-
-
         public static HtmlElement CreateElementHead()
         {
             var result = new HtmlElement(File.ReadAllText($@"{Constants.WwwDirectory}/patterns/head.html"));

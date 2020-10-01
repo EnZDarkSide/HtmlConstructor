@@ -39,7 +39,7 @@ namespace HtmlConstructor.ViewModels
         {
             Doc.UpdateHtml("");
         }
-
+         
         private void AddCommand(HtmlElement element)
         {
             body.AddInnerElement(element);
