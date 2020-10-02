@@ -13,16 +13,16 @@ namespace HtmlConstructor.ViewModels
     public class ToolkitViewModel : ViewModelBase
     {
         public int SelectedIndex { get; set; }
-        public List<IHtmlElementView> toolViews => HtmlElemViewCollection.Default();
+        public List<IHtmlElementView> toolViews => DataTransferAssistant.Default();
 
         public Commands.DelegateCommand ClickAdd
         {
-            get => new Commands.DelegateCommand((_) => HtmlElemViewCollection.OnAddCommandInvoke(toolViews[SelectedIndex].Element), (_) => SelectedIndex != -1);
+            get => new Commands.DelegateCommand((_) => DataTransferAssistant.OnAddCommandInvoke(toolViews[SelectedIndex].Element), (_) => SelectedIndex != -1);
         }
 
         public Commands.DelegateCommand ClickClear
         {
-            get => new Commands.DelegateCommand((_) => HtmlElemViewCollection.OnClearCommandInvoke());
+            get => new Commands.DelegateCommand((_) => DataTransferAssistant.OnClearCommandInvoke());
         }
     }
 }

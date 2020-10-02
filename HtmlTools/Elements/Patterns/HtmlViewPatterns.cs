@@ -6,32 +6,6 @@ using HtmlConstructor.HtmlTools.Elements.Instances;
 
 namespace HtmlConstructor.HtmlTools.Elements.Patterns
 {
-    public class HtmlAView : IHtmlElementView
-    {
-        public Uri Img { get; set; } = null;
-        public string Name { get; set; } = "Тэг 'А'";
-        public string Description { get; set; } = "Создает элемент со ссылкой";
-        public HtmlElement Element { get; set; } = HtmlElementBuilder.CreateElementA();
-
-    }
-
-    public class HtmlDivView : IHtmlElementView
-    {
-        public Uri Img { get; set; } = null;
-        public string Name { get; set; } = "Тэг 'Div'";
-        public string Description { get; set; } = "Создает элемент-контейнер";
-        public HtmlElement Element { get; set; } = HtmlElementBuilder.CreateElementDiv();
-
-    }
-
-    public class HtmlBodyView : IHtmlElementView
-    {
-        public Uri Img { get; set; } = null;
-        public string Name { get; set; } = "Тэг 'Body'";
-        public string Description { get; set; } = "Создает элемент со ссылкой";
-        public HtmlElement Element { get; set; } = HtmlElementBuilder.CreateElementBody();
-
-    }
     public class CarouselView : IHtmlElementView
     {
         public Uri Img { get; set; } = null;
@@ -50,25 +24,15 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         public HtmlElement Element { get; set; } = HtmlElementBuilder.CreateElementCard();
     }
 
+    //TODO: make a customizable elements
 
-    public static class HtmlElemViewCollection
+    public static class DataTransferAssistant
     {
         public delegate void AddItemHandler(HtmlElement element);
         public static event AddItemHandler OnAddCommand;
 
         public delegate void ClearDocHandler();
         public static event ClearDocHandler OnClearCommand;
-
-        public static List<IHtmlElementView> Default()
-        {
-            var elements = new List<IHtmlElementView>
-            {
-                new CarouselView(),
-                new CardView(),
-            };
-
-            return elements;
-        }
 
         public static void OnAddCommandInvoke(HtmlElement element)
         {
@@ -79,5 +43,14 @@ namespace HtmlConstructor.HtmlTools.Elements.Patterns
         {
             OnClearCommand?.Invoke();
         }
+    }
+
+    public static class HtmlElementViewCollection
+    {
+        public static List<IHtmlElementView> Elements = new List<IHtmlElementView>()
+        {
+            new CardView(),
+            new CarouselView(),
+        };
     }
 }

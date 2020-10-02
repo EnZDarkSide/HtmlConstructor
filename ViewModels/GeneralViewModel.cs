@@ -28,9 +28,9 @@ namespace HtmlConstructor.ViewModels
 
         public void InitializeBrowser()
         {
-            HtmlElements = HtmlElemViewCollection.Default();
-            HtmlElemViewCollection.OnAddCommand += AddCommand;
-            HtmlElemViewCollection.OnClearCommand += ClearCommand;
+            HtmlElements = HtmlElementViewCollection.Elements;
+            DataTransferAssistant.OnAddCommand += AddCommand;
+            DataTransferAssistant.OnClearCommand += ClearCommand;
 
             Doc = new HtmlDocument($@"{Constants.WwwDirectory}/index.html");
         }
