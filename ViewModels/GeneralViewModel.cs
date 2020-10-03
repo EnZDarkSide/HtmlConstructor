@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using DevExpress.Mvvm;
+using HtmlConstructor.Data;
 using HtmlConstructor.HtmlTools.Elements;
 using HtmlConstructor.HtmlTools.Elements.Instances;
 using HtmlConstructor.HtmlTools.Elements.Patterns;
@@ -18,8 +19,8 @@ namespace HtmlConstructor.ViewModels
         public HtmlDocument Doc { get; set; }
         public List<IHtmlElementView> HtmlElements { get; set; }
 
-        HtmlElement head = HtmlElementBuilder.CreateElementHead();
-        HtmlElement body = HtmlElementBuilder.CreateElementBody();
+        HtmlElement Head = HtmlElementBuilder.CreateElementHead();
+        HtmlElement Body = HtmlElementBuilder.CreateElementBody();
 
         public GeneralViewModel()
         {
@@ -29,6 +30,7 @@ namespace HtmlConstructor.ViewModels
         public void InitializeBrowser()
         {
             HtmlElements = HtmlElementViewCollection.Elements;
+
             DataTransferAssistant.OnAddCommand += AddCommand;
             DataTransferAssistant.OnClearCommand += ClearCommand;
 
@@ -42,13 +44,13 @@ namespace HtmlConstructor.ViewModels
          
         private void AddCommand(HtmlElement element)
         {
-            body.AddInnerElement(element);
+            Body.AddInnerElement(element);
             UpdateHtml();
         }
 
         public void UpdateHtml()
         {
-            var htmlString = $"{head.HtmlText} {body.HtmlText}";
+            var htmlString = $"{Head.HtmlText} {Body.HtmlText}";
             Doc.UpdateHtml(htmlString);
         }
     }

@@ -26,11 +26,6 @@ namespace HtmlConstructor.CustomControl
             InitializeComponent();
         }
 
-        private void AddButtonClick(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void ElementsList_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ElementsList.SelectedIndex = -1;

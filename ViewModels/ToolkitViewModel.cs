@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm;
+using HtmlConstructor.Data;
 using HtmlConstructor.HtmlTools.Elements;
 using HtmlConstructor.HtmlTools.Elements.Patterns;
 using System;
@@ -13,7 +14,7 @@ namespace HtmlConstructor.ViewModels
     public class ToolkitViewModel : ViewModelBase
     {
         public int SelectedIndex { get; set; }
-        public List<IHtmlElementView> toolViews => DataTransferAssistant.Default();
+        public List<IHtmlElementView> toolViews => HtmlElementViewCollection.Elements;
 
         public Commands.DelegateCommand ClickAdd
         {

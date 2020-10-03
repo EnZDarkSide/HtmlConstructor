@@ -20,7 +20,7 @@ namespace HtmlConstructor
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
             Process.GetCurrentProcess().Kill();
         }
     }

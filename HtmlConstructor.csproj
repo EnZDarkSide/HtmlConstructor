@@ -163,6 +163,7 @@
     <Compile Include="CustomControl\Toolkit.xaml.cs">
       <DependentUpon>Toolkit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\DataTransferAssistant.cs" />
     <Compile Include="HtmlTools\Elements\Patterns\HtmlViewPatterns.cs" />
     <Compile Include="ViewModels\GeneralViewModel.cs" />
     <Compile Include="ViewModels\ToolkitViewModel.cs" />
@@ -182,7 +183,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HtmlTools\Elements\HtmlElementParameter.cs" />
     <Compile Include="HtmlTools\Elements\IHtmlElementView.cs" />
     <Compile Include="HtmlTools\Elements\HtmlElement.cs" />
     <Compile Include="HtmlTools\Elements\Instances\HtmlElementBuilder.cs" />
@@ -225,7 +225,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\img_lights_wide.jpg" />
