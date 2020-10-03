@@ -9,6 +9,6 @@ namespace HtmlConstructor
 {
     public static class Constants
     {
-        public static string WwwDirectory = $@"{Directory.GetCurrentDirectory()}/www";
+        public static string WwwDirectory = $@"{Directory.GetCurrentDirectory()}/../../www";
     }
 }
